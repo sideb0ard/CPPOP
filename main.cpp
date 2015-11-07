@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 #include "defjams.h"
-#include "oscillator.h"
+#include "sine.h"
 
 using namespace std;
 

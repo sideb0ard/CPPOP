@@ -6,4 +6,8 @@
 #define M_PI  (3.14159265)
 #endif
 
+#ifndef TWO_PI
+#define TWO_PI (6.28318530)
+#endif
+
 #define TABLE_SIZE   (200)
