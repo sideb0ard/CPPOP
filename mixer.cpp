@@ -4,21 +4,21 @@
 #include <math.h>
 
 #include "defjams.h"
-#include "sine.h"
+#include "mixer.h"
 
 
-Sine::Sine() : stream(0), left_phase(0), right_phase(0)
+Mixer::Mixer() : stream(0), left_phase(0), right_phase(0)
 {
     /* initialise sinusoidal wavetable */
     for( int i=0; i<TABLE_SIZE; i++ )
     {
-        sine[i] = (float) sin( ((double)i/(double)TABLE_SIZE) * M_PI * 2. );
+        mixer[i] = (float) sin( ((double)i/(double)TABLE_SIZE) * M_PI * 2. );
     }
 
     sprintf( message, "No Message" );
 }
 
-bool Sine::open(PaDeviceIndex index)
+bool Mixer::open(PaDeviceIndex index)
 {
     PaStreamParameters outputParameters;
 
@@ -39,8 +39,8 @@ bool Sine::open(PaDeviceIndex index)
         SAMPLE_RATE,
         FRAMES_PER_BUFFER,
         paClipOff,      /* we won't output out of range samples so don't bother clipping them */
-        &Sine::paCallback,
-        this            /* Using 'this' for userData so we can cast to Sine* in paCallback method */
+        &Mixer::processAudio,
+        this            /* Using 'this' for userData so we can cast to Mixer* in paCallback method */
         );
 
     if (err != paNoError)
@@ -49,7 +49,7 @@ bool Sine::open(PaDeviceIndex index)
         return false;
     }
 
-    err = Pa_SetStreamFinishedCallback( stream, &Sine::paStreamFinished );
+    err = Pa_SetStreamFinishedCallback( stream, &Mixer::paStreamFinished );
 
     if (err != paNoError)
     {
@@ -62,7 +62,7 @@ bool Sine::open(PaDeviceIndex index)
     return true;
 }
 
-bool Sine::close()
+bool Mixer::close()
 {
     if (stream == 0)
         return false;
@@ -74,7 +74,7 @@ bool Sine::close()
 }
 
 
-bool Sine::start()
+bool Mixer::start()
 {
     if (stream == 0)
         return false;
@@ -84,7 +84,7 @@ bool Sine::start()
     return (err == paNoError);
 }
 
-bool Sine::stop()
+bool Mixer::stop()
 {
     if (stream == 0)
         return false;
@@ -94,8 +94,8 @@ bool Sine::stop()
     return (err == paNoError);
 }
 
-/* The instance callback, where we have access to every method/variable in object of class Sine */
-int Sine::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
+/* The instance callback, where we have access to every method/variable in object of class Mixer */
+int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
     unsigned long framesPerBuffer,
     const PaStreamCallbackTimeInfo* timeInfo,
     PaStreamCallbackFlags statusFlags)
@@ -109,8 +109,8 @@ int Sine::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
 
     for( i=0; i<framesPerBuffer; i++ )
     {
-        *out++ = sine[left_phase];  /* left */
-        *out++ = sine[right_phase];  /* right */
+        *out++ = mixer[left_phase];  /* left */
+        *out++ = mixer[right_phase];  /* right */
         left_phase += 1;
         if( left_phase >= TABLE_SIZE ) left_phase -= TABLE_SIZE;
         right_phase += 3; /* higher pitch so we can distinguish left and right. */
@@ -125,22 +125,22 @@ int Sine::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
 ** It may called at interrupt level on some machines so don't do anything
 ** that could mess up the system like calling malloc() or free().
 */
-int Sine::paCallback( const void *inputBuffer, void *outputBuffer,
+int Mixer::processAudio( const void *inputBuffer, void *outputBuffer,
     unsigned long framesPerBuffer,
     const PaStreamCallbackTimeInfo* timeInfo,
     PaStreamCallbackFlags statusFlags,
     void *userData )
 {
-    /* Here we cast userData to Sine* type so we can call the instance method paCallbackMethod, we can do that since 
+    /* Here we cast userData to Mixer* type so we can call the instance method paCallbackMethod, we can do that since 
        we called Pa_OpenStream with 'this' for userData */
-    return ((Sine*)userData)->paCallbackMethod(inputBuffer, outputBuffer,
+    return ((Mixer*)userData)->paCallbackMethod(inputBuffer, outputBuffer,
         framesPerBuffer,
         timeInfo,
         statusFlags);
 }
 
 
-void Sine::paStreamFinishedMethod()
+void Mixer::paStreamFinishedMethod()
 {
     printf( "Stream Completed: %s\n", message );
 }
@@ -148,7 +148,7 @@ void Sine::paStreamFinishedMethod()
 /*
  * This routine is called by portaudio when playback is done.
  */
-void Sine::paStreamFinished(void* userData)
+void Mixer::paStreamFinished(void* userData)
 {
-    return ((Sine*)userData)->paStreamFinishedMethod();
+    return ((Mixer*)userData)->paStreamFinishedMethod();
 }

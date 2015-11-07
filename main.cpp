@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 #include "defjams.h"
-#include "sine.h"
+#include "mixer.h"
 
 using namespace std;
 
@@ -21,24 +21,24 @@ void exxy()
 int siney() 
 {
     PaError err;
-    Sine sine;
+    Mixer mixer;
 
     printf("PortAudio Test: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
     
     err = Pa_Initialize();
     if( err != paNoError ) goto error;
 
-    if (sine.open(Pa_GetDefaultOutputDevice()))
+    if (mixer.open(Pa_GetDefaultOutputDevice()))
     {
-        if (sine.start())
+        if (mixer.start())
         {
             printf("Play for %d seconds.\n", NUM_SECONDS );
             Pa_Sleep( NUM_SECONDS * 1000 );
 
-            sine.stop();
+            mixer.stop();
         }
 
-        sine.close();
+        mixer.close();
     }
 
     Pa_Terminate();
