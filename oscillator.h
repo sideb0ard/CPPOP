@@ -1,3 +1,6 @@
+#ifndef OSCILLATOR_H_
+#define OSCILLATOR_H_
+
 class Oscillator
 {
 public:
@@ -11,3 +14,5 @@ private:
   float phaseIncr;
   float clock;
 };
+
+#endif // OSCILLATOR_H_

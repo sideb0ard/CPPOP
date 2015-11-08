@@ -8,8 +8,11 @@
 
 #include "defjams.h"
 #include "mixer.h"
+#include "oscillator.h"
 
 using namespace std;
+
+Mixer mixer;
 
 
 void exxy()
@@ -18,32 +21,15 @@ void exxy()
   exit(0);
 }
 
-int siney() 
+int setupAudio() 
 {
     PaError err;
-    Mixer mixer;
 
-    printf("PortAudio Test: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
+    printf("PortAudio Sizzurp: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
     
     err = Pa_Initialize();
     if( err != paNoError ) goto error;
 
-    if (mixer.open(Pa_GetDefaultOutputDevice()))
-    {
-        if (mixer.start())
-        {
-            printf("Play for %d seconds.\n", NUM_SECONDS );
-            Pa_Sleep( NUM_SECONDS * 1000 );
-
-            mixer.stop();
-        }
-
-        mixer.close();
-    }
-
-    Pa_Terminate();
-    printf("Test finished.\n");
-    
     return err;
 
 error:
@@ -52,10 +38,18 @@ error:
     fprintf( stderr, "Error number: %d\n", err );
     fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
     return err;
+}
+
+void siney()
+{
+  Oscillator sine;
+  mixer.signals.push_back(sine);
+  //float val;
   //while (1)
   //{
-  //  cout << "beeeeeeee\n";
-  //  usleep(2000000);
+  //  val = sine.genNextSound();
+  //  cout << "Ma valley " << val << endl;
+  //  //usleep(20000);
   //}
 }
 
@@ -64,24 +58,15 @@ void interpret(string input_line)
   if (input_line.compare("sine") == 0) {
     cout << "SINEY!\n";
     thread {siney}.detach();
-    //s1.join();
   }
-
-}
-
-void setupAudio()
-{
-  PaError err;
-  err = Pa_Initialize();
-  if( err != paNoError )
-    cout << "BARFED\n";
 }
 
 
 int main()
 {
 
-  // setupAudio();
+  setupAudio();
+  thread {&Mixer::goMix,&mixer}.detach();
 
   string input_line;
   while (1)

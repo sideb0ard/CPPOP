@@ -1,4 +1,7 @@
+#include <vector>
 #include <portaudio.h>
+
+#include "oscillator.h"
 
 
 class Mixer
@@ -9,6 +12,9 @@ public:
     bool close();
     bool start();
     bool stop();
+    void goMix();
+
+    std::vector<Oscillator> signals;
 
 private:
     /* The instance callback, where we have access to every method/variable in object of class Mixer */
@@ -35,8 +41,4 @@ private:
     static void paStreamFinished(void* userData);
 
     PaStream *stream;
-    float mixer[TABLE_SIZE];
-    int left_phase;
-    int right_phase;
-    char message[20];
 };

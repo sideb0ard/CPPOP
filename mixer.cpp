@@ -7,15 +7,8 @@
 #include "mixer.h"
 
 
-Mixer::Mixer() : stream(0), left_phase(0), right_phase(0)
+Mixer::Mixer() : stream(0)
 {
-    /* initialise sinusoidal wavetable */
-    for( int i=0; i<TABLE_SIZE; i++ )
-    {
-        mixer[i] = (float) sin( ((double)i/(double)TABLE_SIZE) * M_PI * 2. );
-    }
-
-    sprintf( message, "No Message" );
 }
 
 bool Mixer::open(PaDeviceIndex index)
@@ -94,6 +87,12 @@ bool Mixer::stop()
     return (err == paNoError);
 }
 
+void Mixer::goMix()
+{
+  if (Mixer::open(Pa_GetDefaultOutputDevice()))
+    Mixer::start();
+}
+
 /* The instance callback, where we have access to every method/variable in object of class Mixer */
 int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
     unsigned long framesPerBuffer,
@@ -101,20 +100,24 @@ int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
     PaStreamCallbackFlags statusFlags)
 {
     float *out = (float*)outputBuffer;
-    unsigned long i;
+    unsigned long i, j;
 
     (void) timeInfo; /* Prevent unused variable warnings. */
     (void) statusFlags;
     (void) inputBuffer;
 
+    float outval = 0;
+    float ns = 0;
     for( i=0; i<framesPerBuffer; i++ )
     {
-        *out++ = mixer[left_phase];  /* left */
-        *out++ = mixer[right_phase];  /* right */
-        left_phase += 1;
-        if( left_phase >= TABLE_SIZE ) left_phase -= TABLE_SIZE;
-        right_phase += 3; /* higher pitch so we can distinguish left and right. */
-        if( right_phase >= TABLE_SIZE ) right_phase -= TABLE_SIZE;
+        for ( j=0; j<signals.size(); j++ )
+        {
+          ns = signals[j].genNextSound();
+          outval += ns;
+        }
+
+        outval = outval / signals.size();
+        *out = outval;
     }
 
     return paContinue;
@@ -142,7 +145,7 @@ int Mixer::processAudio( const void *inputBuffer, void *outputBuffer,
 
 void Mixer::paStreamFinishedMethod()
 {
-    printf( "Stream Completed: %s\n", message );
+    printf( "Stream Completed\n");
 }
 
 /*
