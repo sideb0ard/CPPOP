@@ -4,14 +4,6 @@
 #include "defjams.h"
 #include "oscillator.h"
 
-Oscillator::Oscillator() 
-{
-    vol = 0.7;
-    freq = 440;
-    phase = 0;
-    phaseIncr = freq * FREQRAD;
-    clock = 0;
-}
 Oscillator::Oscillator(float f) : freq{f}
 {
     vol = 0.7;

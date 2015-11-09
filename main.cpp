@@ -57,6 +57,13 @@ void interpret(string input_line)
         int freq = stoi(m[1], &sz);
         siney(freq);
     }
+
+    if (input_line.compare("end") == 0) {
+        mixer.signals.clear();
+    }
+    if (input_line.compare("ps") == 0) {
+        cout << mixer.signals.size() << endl;
+    }
 }
 
 
