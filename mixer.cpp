@@ -127,9 +127,8 @@ int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
                 outval += ns;
             }
 
-            outval = outval / signals.size();
-            *out++ = outval;
-            *out++ = outval;
+            *out++ = outval / signals.size();
+            *out++ = outval / signals.size();
         }
     }
 

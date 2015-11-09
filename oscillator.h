@@ -5,6 +5,7 @@ class Oscillator
 {
 public:
   Oscillator();
+  Oscillator(float f);
   float genNextSound();
 
 private:

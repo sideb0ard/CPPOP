@@ -42,15 +42,8 @@ error:
 
 void siney()
 {
-  Oscillator sine;
+  Oscillator sine(440);
   mixer.signals.push_back(sine);
-  //float val;
-  //while (1)
-  //{
-  //  val = sine.genNextSound();
-  //  cout << "Ma valley " << val << endl;
-  //  //usleep(20000);
-  //}
 }
 
 void interpret(string input_line)

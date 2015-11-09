@@ -8,3 +8,7 @@
 #ifndef TWO_PI
 #define TWO_PI (6.28318530)
 #endif
+
+#ifndef FREQRAD
+#define FREQRAD (0.00014247585)
+#endif
