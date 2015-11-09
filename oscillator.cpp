@@ -9,16 +9,16 @@ Oscillator::Oscillator()
     vol = 0.7;
     freq = 440;
     phase = 0;
-    phaseIncr = FREQRAD;
+    phaseIncr = freq * FREQRAD;
     clock = 0;
 }
 Oscillator::Oscillator(float f) : freq{f}
 {
     vol = 0.7;
     phase = 0;
-    phaseIncr = FREQRAD;
+    phaseIncr = freq * FREQRAD;
     clock = 0;
-    std::cout << "CREATTTTTED...\n";
+    std::cout << "CREATTTTTED... with " << f << std::endl;
 }
     
 
