@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iostream>
+#include <regex>
 #include <thread>
 
 #include <math.h>
@@ -40,18 +41,22 @@ error:
     return err;
 }
 
-void siney()
+void siney(int freq)
 {
-  Oscillator sine(440);
+  Oscillator sine(freq);
   mixer.signals.push_back(sine);
 }
 
 void interpret(string input_line)
 {
-  if (input_line.compare("sine") == 0) {
-    cout << "SINEY!\n";
-    thread {siney}.detach();
-  }
+    string::size_type sz;
+    smatch m;
+    regex e ("sine ([0-9]+)");
+    if (regex_search (input_line, m, e))
+    {
+        int freq = stoi(m[1], &sz);
+        siney(freq);
+    }
 }
 
 
@@ -70,7 +75,6 @@ int main()
       exxy();
 
     interpret(input_line);
-    cout << "Get me! " << input_line;
   }
 
 }
