@@ -35,9 +35,7 @@ private:
     
     void paStreamFinishedMethod();
 
-    /*
-     * This routine is called by portaudio when playback is done.
-     */
+
     static void paStreamFinished(void* userData);
 
     PaStream *stream;

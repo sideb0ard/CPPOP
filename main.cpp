@@ -17,8 +17,8 @@ Mixer mixer;
 
 void exxy()
 {
-  cout << "\n\033[38;5;47mLater, ya val jerk...\033[0m\n" << endl;
-  exit(0);
+    cout << "\n\033[38;5;47mLater, ya val jerk...\033[0m\n" << endl;
+    exit(0);
 }
 
 int setupAudio() 

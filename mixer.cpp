@@ -89,8 +89,8 @@ bool Mixer::stop()
 
 void Mixer::goMix()
 {
-  if (Mixer::open(Pa_GetDefaultOutputDevice()))
-    Mixer::start();
+    if (Mixer::open(Pa_GetDefaultOutputDevice()))
+        Mixer::start();
 }
 
 /* The instance callback, where we have access to every method/variable in object of class Mixer */
@@ -108,16 +108,29 @@ int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
 
     float outval = 0;
     float ns = 0;
-    for( i=0; i<framesPerBuffer; i++ )
+    if (signals.size() == 0)
     {
-        for ( j=0; j<signals.size(); j++ )
+        for( i=0; i<framesPerBuffer; i++ )
         {
-          ns = signals[j].genNextSound();
-          outval += ns;
+            *out++ = 0;
+            *out++ = 0;
         }
+    }
+    else
+    {
+        for( i=0; i<framesPerBuffer; i++ )
+        {
+            for ( j=0; j<signals.size(); j++ )
+            {
+                //std::cout << "SIGNAL!" << j << std::endl;
+                ns = signals[j].genNextSound();
+                outval += ns;
+            }
 
-        outval = outval / signals.size();
-        *out = outval;
+            outval = outval / signals.size();
+            *out++ = outval;
+            *out++ = outval;
+        }
     }
 
     return paContinue;
@@ -134,6 +147,8 @@ int Mixer::processAudio( const void *inputBuffer, void *outputBuffer,
     PaStreamCallbackFlags statusFlags,
     void *userData )
 {
+    //std::cout << "SIGNALZZZ: " << signals.size() << std::endl;
+    //std::cout << "SIGNALZZZ: " << std::endl;
     /* Here we cast userData to Mixer* type so we can call the instance method paCallbackMethod, we can do that since 
        we called Pa_OpenStream with 'this' for userData */
     return ((Mixer*)userData)->paCallbackMethod(inputBuffer, outputBuffer,
