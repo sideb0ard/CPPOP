@@ -51,18 +51,27 @@ void interpret(string input_line)
 {
     string::size_type sz;
     smatch m;
-    regex e ("sine ([0-9]+)");
-    if (regex_search (input_line, m, e))
+    regex sn ("sine ([0-9]+)");
+    if (regex_search (input_line, m, sn))
     {
         int freq = stoi(m[1], &sz);
         siney(freq);
     }
 
+    regex stp ("stop ([0-9]+)");
+    if (regex_search (input_line, m, stp))
+    {
+        int sn = stoi(m[1], &sz);
+        mixer.signals.erase(mixer.signals.begin()+sn);
+    }
     if (input_line.compare("end") == 0) {
         mixer.signals.clear();
     }
     if (input_line.compare("ps") == 0) {
-        cout << mixer.signals.size() << endl;
+        for ( int i = 0; i < mixer.signals.size(); i++) 
+        {
+            cout << "Sine:" << i << " // Freq: " << mixer.signals[i].freq << endl;
+        }
     }
 }
 
