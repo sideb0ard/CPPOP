@@ -2,6 +2,7 @@
 #include <portaudio.h>
 
 #include "oscillator.h"
+#include "soundb0ard.h"
 
 
 class Mixer
@@ -14,7 +15,8 @@ public:
     bool stop();
     void goMix();
 
-    std::vector<Oscillator> signals;
+    //std::vector<Oscillator> signals;
+    std::vector<Soundb0ard> signals;
 
 private:
     /* The instance callback, where we have access to every method/variable in object of class Mixer */

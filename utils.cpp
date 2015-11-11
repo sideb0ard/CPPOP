@@ -37,8 +37,9 @@ error:
 
 void siney(int freq)
 {
-  Oscillator sine(freq);
-  mixer.signals.push_back(sine);
+  //Oscillator sine(freq);
+  Soundb0ard sbd(freq);
+  mixer.signals.push_back(sbd);
 }
 
 void interpret(string input_line)
@@ -64,7 +65,7 @@ void interpret(string input_line)
     if (input_line.compare("ps") == 0) {
         for ( int i = 0; i < mixer.signals.size(); i++) 
         {
-            cout << "Sine:" << i << " // Freq: " << mixer.signals[i].freq << endl;
+            cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
         }
     }
 }
