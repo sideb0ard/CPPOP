@@ -65,7 +65,8 @@ void interpret(string input_line)
     if (input_line.compare("ps") == 0) {
         for ( int i = 0; i < mixer.signals.size(); i++) 
         {
-            cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
+            //cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
+            cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << " // Phase: " << mixer.signals[i].car.phase << " // PhaseIncr: " << mixer.signals[i].car.phaseIncr << endl;
         }
     }
 }
