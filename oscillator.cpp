@@ -11,6 +11,7 @@ Oscillator::Oscillator(float f) : freq{f}
     phaseIncr = freq * FREQRAD;
     clock = 0;
     std::cout << "CREATTTTTED... with " << f << std::endl;
+
 }
     
 

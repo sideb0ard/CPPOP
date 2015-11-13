@@ -12,7 +12,7 @@ using namespace std;
 
 void exxy()
 {
-    cout << "\n\033[38;5;47mLater, ya val jerk...\033[0m\n" << endl;
+    cout << "\n\033[38;5;47mBEat it, ya val jerk...\033[0m\n" << endl;
     exit(0);
 }
 

@@ -25,6 +25,7 @@ bool Mixer::open(PaDeviceIndex index)
     outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
     outputParameters.hostApiSpecificStreamInfo = NULL;
 
+
     PaError err = Pa_OpenStream(
         &stream,
         NULL, /* no input */
@@ -108,6 +109,7 @@ int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
 
     float outval = 0;
     float ns = 0;
+
     if (signals.size() == 0)
     {
         for( i=0; i<framesPerBuffer; i++ )
@@ -120,9 +122,10 @@ int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
     {
         for( i=0; i<framesPerBuffer; i++ )
         {
+            //float outval = 0;
+            //float ns = 0;
             for ( j=0; j<signals.size(); j++ )
             {
-                //std::cout << "SIGNAL!" << j << std::endl;
                 ns = signals[j].genNextSound();
                 outval += ns;
             }
@@ -146,8 +149,6 @@ int Mixer::processAudio( const void *inputBuffer, void *outputBuffer,
     PaStreamCallbackFlags statusFlags,
     void *userData )
 {
-    //std::cout << "SIGNALZZZ: " << signals.size() << std::endl;
-    //std::cout << "SIGNALZZZ: " << std::endl;
     /* Here we cast userData to Mixer* type so we can call the instance method paCallbackMethod, we can do that since 
        we called Pa_OpenStream with 'this' for userData */
     return ((Mixer*)userData)->paCallbackMethod(inputBuffer, outputBuffer,
@@ -162,9 +163,6 @@ void Mixer::paStreamFinishedMethod()
     printf( "Stream Completed\n");
 }
 
-/*
- * This routine is called by portaudio when playback is done.
- */
 void Mixer::paStreamFinished(void* userData)
 {
     return ((Mixer*)userData)->paStreamFinishedMethod();
