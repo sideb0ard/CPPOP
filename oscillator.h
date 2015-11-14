@@ -1,9 +1,10 @@
 #ifndef OSCILLATOR_H_
 #define OSCILLATOR_H_
 
-#include <vector>
+#include <string>
+#include "soundb0ard.h"
 
-class Oscillator
+class Oscillator : public Soundb0ard
 {
 public:
   Oscillator(float f);
@@ -14,6 +15,7 @@ public:
   float clock;
 
   float genNextSound();
+  std::string info();
 };
 
 #endif // OSCILLATOR_H_

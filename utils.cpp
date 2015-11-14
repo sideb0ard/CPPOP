@@ -38,8 +38,8 @@ error:
 void siney(int freq)
 {
   //Oscillator sine(freq);
-  Soundb0ard sbd(freq);
-  mixer.signals.push_back(sbd);
+  //Soundb0ard sbd(freq);
+  mixer.signals.push_back(new Oscillator(freq));
 }
 
 void interpret(string input_line)
@@ -66,7 +66,7 @@ void interpret(string input_line)
         for ( int i = 0; i < mixer.signals.size(); i++) 
         {
             //cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
-            cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << " // Phase: " << mixer.signals[i].car.phase << " // PhaseIncr: " << mixer.signals[i].car.phaseIncr << endl;
+            cout << mixer.signals[i]->info() << endl;
         }
     }
 }

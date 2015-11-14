@@ -16,7 +16,7 @@ public:
     void goMix();
 
     //std::vector<Oscillator> signals;
-    std::vector<Soundb0ard> signals;
+    std::vector<Soundb0ard*> signals;
 
 private:
     /* The instance callback, where we have access to every method/variable in object of class Mixer */

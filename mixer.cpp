@@ -107,8 +107,8 @@ int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
     (void) statusFlags;
     (void) inputBuffer;
 
-    float outval = 0;
-    float ns = 0;
+    //float outval = 0;
+    //float ns = 0;
 
     if (signals.size() == 0)
     {
@@ -122,11 +122,11 @@ int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
     {
         for( i=0; i<framesPerBuffer; i++ )
         {
-            //float outval = 0;
-            //float ns = 0;
+            float outval = 0;
+            float ns = 0;
             for ( j=0; j<signals.size(); j++ )
             {
-                ns = signals[j].genNextSound();
+                ns = signals[j]->genNextSound();
                 outval += ns;
             }
 
