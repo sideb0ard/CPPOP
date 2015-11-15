@@ -42,6 +42,27 @@ void siney(int freq)
   mixer.signals.push_back(new Oscillator(freq));
 }
 
+void squmpy(int freq)
+{
+  //Oscillator sine(freq);
+  //Soundb0ard sbd(freq);
+  mixer.signals.push_back(new Sqump(freq));
+}
+
+void sawy(int freq)
+{
+  //Oscillator sine(freq);
+  //Soundb0ard sbd(freq);
+  mixer.signals.push_back(new Sawtooth(freq));
+}
+
+void triy(int freq)
+{
+  //Oscillator sine(freq);
+  //Soundb0ard sbd(freq);
+  mixer.signals.push_back(new Triangle(freq));
+}
+
 void interpret(string input_line)
 {
     string::size_type sz;
@@ -51,6 +72,27 @@ void interpret(string input_line)
     {
         int freq = stoi(m[1], &sz);
         siney(freq);
+    }
+
+    regex sq ("sqump ([0-9]+)");
+    if (regex_search (input_line, m, sq))
+    {
+        int freq = stoi(m[1], &sz);
+        squmpy(freq);
+    }
+
+    regex sw ("saw ([0-9]+)");
+    if (regex_search (input_line, m, sw))
+    {
+        int freq = stoi(m[1], &sz);
+        sawy(freq);
+    }
+
+    regex tr ("tri ([0-9]+)");
+    if (regex_search (input_line, m, tr))
+    {
+        int freq = stoi(m[1], &sz);
+        triy(freq);
     }
 
     regex stp ("stop ([0-9]+)");

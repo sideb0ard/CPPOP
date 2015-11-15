@@ -2,7 +2,10 @@
 #include <portaudio.h>
 
 #include "oscillator.h"
+#include "sawtooth.h"
 #include "soundb0ard.h"
+#include "sqump.h"
+#include "triangle.h"
 
 
 class Mixer
