@@ -108,7 +108,7 @@ void interpret(string input_line)
         for ( int i = 0; i < mixer.signals.size(); i++) 
         {
             //cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
-            cout << mixer.signals[i]->info() << endl;
+            cout << "[" << i << "] " << mixer.signals[i]->info() << endl;
         }
     }
 }

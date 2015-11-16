@@ -6,28 +6,21 @@
 #include "defjams.h"
 #include "sqump.h"
 
-Sqump::Sqump(float f) : freq{f}
+Sqump::Sqump(float f) : freq{f}, car{freq}, mod{730}
 {
     vol = 0.7;
-    phase = 0;
-    phaseIncr[0] = freq * FREQRAD;
-    phaseIncr[1] = freq * FREQRAD * 2;
-    phaseIncr[2] = freq * FREQRAD * 3;
-    phaseIncr[3] = freq * FREQRAD * 4;
+    mod.amp = FREQRAD * 100;
     std::cout << "SQUMP CREATTTTTED... with " << f << std::endl;
 
 }
     
 float Sqump::genNextSound()
 {
-    float val = 0;
-    int p;
-    for (p=0; p < 4; p++) {
-        val += sin(phase += phaseIncr[p]);
-        if (phase >= TWO_PI)
-            phase -= TWO_PI;
-    }
-    return vol * (val / 1.53);
+
+    int modVal = mod.amp * sin(mod.genNextSound());
+    car.phase += car.phaseIncr + modVal;
+
+    return vol * sin(car.genNextSound());
 }
 
 std::string Sqump::info()

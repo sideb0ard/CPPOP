@@ -9,6 +9,7 @@
 Oscillator::Oscillator(float f) : freq{f}
 {
     vol = 0.7;
+    amp = 0;
     phase = 0;
     phaseIncr = freq * FREQRAD;
     clock = 0;

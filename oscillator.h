@@ -9,6 +9,7 @@ class Oscillator : public Soundb0ard
 public:
   Oscillator(float f);
   float freq;
+  float amp;
   float vol;
   float phase;
   float phaseIncr;
