@@ -3,21 +3,23 @@
 
 #include <portaudio.h>
 
+#include "algae.h"
+#include "bpmrrr.h"
 #include "mixer.h"
+#include "utils.h"
 
 using namespace std;
 
 Mixer mixer;
-
-void exxy();
-int setupAudio();
-void siney(int freq);
-void interpret(string input_line);
+BPMrrr bpm;
+Algae alg;
 
 int main()
 {
   setupAudio();
-  thread {&Mixer::goMix,&mixer}.detach();
+  thread {&Mixer::goMix, &mixer}.detach();
+  thread {&BPMrrr::Run, &bpm}.detach();
+  thread {&Algae::Run, &alg}.detach();
 
   string input_line;
   while (1)

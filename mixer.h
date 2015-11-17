@@ -1,3 +1,6 @@
+#ifndef MIXER_H_
+#define MIXER_H_
+
 #include <vector>
 #include <portaudio.h>
 
@@ -17,6 +20,9 @@ public:
     bool start();
     bool stop();
     void goMix();
+
+    int bpm;
+    int microtick; // 16 x bpm
 
     //std::vector<Oscillator> signals;
     std::vector<Soundb0ard*> signals;
@@ -45,3 +51,5 @@ private:
 
     PaStream *stream;
 };
+
+#endif // MIXER_H

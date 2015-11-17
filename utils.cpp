@@ -5,8 +5,9 @@
 
 #include "defjams.h"
 #include "mixer.h"
+#include "utils.h"
 
-extern Mixer mixer;
+//extern Mixer mixer;
 
 using namespace std;
 

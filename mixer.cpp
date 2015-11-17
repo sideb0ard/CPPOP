@@ -7,7 +7,7 @@
 #include "mixer.h"
 
 
-Mixer::Mixer() : stream(0)
+Mixer::Mixer() : stream(0), bpm(100)
 {
 }
 
