@@ -20,6 +20,7 @@ public:
     bool start();
     bool stop();
     void goMix();
+    int sigSize();
 
     int bpm;
     int microtick; // 16 x bpm

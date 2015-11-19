@@ -14,7 +14,7 @@ void BPMrrr::Run()
         int sleepTime = (60000 / mixer.bpm) ; // / 16;  // microTicks - 16 per BPM
         //std::cout << "bpm boopi - Inc'ing mixer.microtick.." << std::endl;
         mixer.microtick++;
-        //std::cout << "Mictic: " << mixer.microtick;
+        // std::cout << "Mictic:::: " << mixer.microtick << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
     }
 }

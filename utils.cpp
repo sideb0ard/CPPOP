@@ -17,6 +17,32 @@ void exxy()
     exit(0);
 }
 
+int primeyGen()
+{
+    // init randy
+    srand (time(NULL));
+    int randy = rand() % 720 + 140; // between 140 - 860 - mostly audible range
+    std::cout << "Randy Num : " << randy << " // Is it prime?" << isPrime(randy) << std::endl;
+    for ( ; randy <= 860 && !isPrime(randy); randy++) {}
+    if (isPrime(randy))
+        return randy;
+    return 0;
+}
+
+int isPrime(int n)
+{
+    int i, sq, count = 0;
+    if ( n == 1 || n == 2 )
+        return true;
+    sq = sqrt(n);
+    for ( i = 2; i <= sq; i++ )
+    {
+        if (( n % i ) == 0)
+            return false;
+    }
+    return true;
+}
+
 int setupAudio() 
 {
     PaError err;
@@ -94,6 +120,17 @@ void interpret(string input_line)
     {
         int freq = stoi(m[1], &sz);
         triy(freq);
+    }
+
+    if (input_line.compare("randy") == 0) {
+        std::cout << "YEr randyNUm is " << primeyGen() << std::endl;
+    }
+
+    regex pr ("prime ([0-9]+)");
+    if (regex_search (input_line, m, pr))
+    {
+        int pn = stoi(m[1], &sz);
+        std::cout << "Yer Prime search says... " << isPrime(pn) << std::endl;
     }
 
     regex stp ("stop ([0-9]+)");

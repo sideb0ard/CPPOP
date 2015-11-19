@@ -78,6 +78,11 @@ bool Mixer::start()
     return (err == paNoError);
 }
 
+int Mixer::sigSize()
+{
+    return signals.size();
+}
+
 bool Mixer::stop()
 {
     if (stream == 0)
