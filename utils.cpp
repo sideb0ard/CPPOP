@@ -1,8 +1,11 @@
+#include <cmath>
 #include <iostream>
 #include <regex>
+#include <thread>
 
 #include <portaudio.h>
 
+#include "algae.h"
 #include "defjams.h"
 #include "mixer.h"
 #include "utils.h"
@@ -76,6 +79,14 @@ void squmpy(int freq)
   mixer.signals.push_back(new Sqump(freq));
 }
 
+void squmpdate(int sqid, int freq)
+{
+    Sqump *sqmp =  (Sqump *) mixer.signals[sqid];
+    sqmp->mod.freq = freq;
+    std::cout << "Squmpdated! : sqmp.mod.freq: " << sqmp->mod.freq << std::endl;
+
+}
+
 void sawy(int freq)
 {
   //Oscillator sine(freq);
@@ -108,6 +119,15 @@ void interpret(string input_line)
         squmpy(freq);
     }
 
+    regex sqch ("sq ([0-9]+) (mod|car) ([0-9]+)");
+    if (regex_search (input_line, m, sqch))
+    {
+        int sq = stoi(m[1], &sz);
+        int freq = stoi(m[3], &sz);
+        std::cout << "Oooh, changing a sqump! for " << m[2] << "Freq!: " << freq << std::endl;
+        squmpdate(sq, freq);
+    }
+
     regex sw ("saw ([0-9]+)");
     if (regex_search (input_line, m, sw))
     {
@@ -124,6 +144,12 @@ void interpret(string input_line)
 
     if (input_line.compare("randy") == 0) {
         std::cout << "YEr randyNUm is " << primeyGen() << std::endl;
+    }
+
+    if (input_line.compare("primey") == 0) {
+        Algae alg;
+        std::cout << "Starting Primey generat0r..." << std::endl;
+        std::thread {&Algae::Run, &alg}.detach();
     }
 
     regex pr ("prime ([0-9]+)");

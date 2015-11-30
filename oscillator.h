@@ -16,6 +16,7 @@ public:
   float clock;
 
   float genNextSound();
+  float phIncr();
   std::string info();
 };
 

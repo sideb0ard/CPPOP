@@ -18,6 +18,10 @@ Oscillator::Oscillator(float f) : freq{f}
 }
     
 
+float Oscillator::phIncr()
+{
+    return freq * FREQRAD;
+}
 
 float Oscillator::genNextSound()
 {

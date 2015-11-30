@@ -12,6 +12,8 @@ public:
 
     virtual float genNextSound() = 0;
     virtual std::string info() = 0;
+
+    float freq;
 };
 
 #endif // SOUNDB0ARD_

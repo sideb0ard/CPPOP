@@ -3,7 +3,6 @@
 
 #include <portaudio.h>
 
-#include "algae.h"
 #include "bpmrrr.h"
 #include "mixer.h"
 #include "utils.h"
@@ -12,14 +11,12 @@ using namespace std;
 
 Mixer mixer;
 BPMrrr bpm;
-Algae alg;
 
 int main()
 {
   setupAudio();
   thread {&Mixer::goMix, &mixer}.detach();
   thread {&BPMrrr::Run, &bpm}.detach();
-  thread {&Algae::Run, &alg}.detach();
 
   string input_line;
   while (1)
