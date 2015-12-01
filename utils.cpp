@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <sstream>
 #include <regex>
 #include <thread>
 
@@ -105,30 +106,40 @@ void triy(int freq)
   mixer.signals.push_back(new Triangle(freq));
 }
 
+// trim from start
+static inline std::string &ltrim(std::string &s) {
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+        return s;
+}
+
+// trim at end
+static inline std::string &rtrim(std::string &s) {
+        s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+        return s;
+}
+
 void interpret(string input_line)
 {
 
-    size_t pos = 0;
+    //size_t pos = 0;
     string::size_type sz;
 
-    std::string delim = ",";
     std::string token;
-
-    //while ((pos = input_line.find(delim)) != std::string::npos) {
-
-    //    token = input_line.substr(0, pos);
-    //    input_line.erase(0, pos + delim.length());
+    std::stringstream stream(input_line);
+    while(getline(stream, token, ',') ) {
+        std::string ttoken = ltrim(rtrim(token));
+        //cout << ltrim(rtrim(token)) << "YARLY" << endl;
 
         smatch m;
         regex sn ("sine ([0-9]+)");
-        if (regex_search (input_line, m, sn))
+        if (regex_search (ttoken, m, sn))
         {
             int freq = stoi(m[1], &sz);
             siney(freq);
         }
 
         regex sq ("fm ([0-9]+) ([0-9]+)");
-        if (regex_search (input_line, m, sq))
+        if (regex_search (ttoken, m, sq))
         {
             int cfreq = stoi(m[1], &sz);
             int mfreq = stoi(m[2], &sz);
@@ -136,7 +147,7 @@ void interpret(string input_line)
         }
 
         regex sqch ("mfm ([0-9]+) (mod|car) ([0-9]+)");
-        if (regex_search (input_line, m, sqch))
+        if (regex_search (ttoken, m, sqch))
         {
             int sq = stoi(m[1], &sz);
             int freq = stoi(m[3], &sz);
@@ -145,51 +156,51 @@ void interpret(string input_line)
         }
 
         regex sw ("saw ([0-9]+)");
-        if (regex_search (input_line, m, sw))
+        if (regex_search (ttoken, m, sw))
         {
             int freq = stoi(m[1], &sz);
             sawy(freq);
         }
 
         regex tr ("tri ([0-9]+)");
-        if (regex_search (input_line, m, tr))
+        if (regex_search (ttoken, m, tr))
         {
             int freq = stoi(m[1], &sz);
             triy(freq);
         }
 
-        if (input_line.compare("randy") == 0) {
+        if (ttoken.compare("randy") == 0) {
             std::cout << "YEr randyNUm is " << primeyGen() << std::endl;
         }
 
-        if (input_line.compare("primey") == 0) {
+        if (ttoken.compare("primey") == 0) {
             Algae alg;
             std::cout << "Starting Primey generat0r..." << std::endl;
             std::thread {&Algae::Run, &alg}.detach();
         }
 
         regex pr ("prime ([0-9]+)");
-        if (regex_search (input_line, m, pr))
+        if (regex_search (ttoken, m, pr))
         {
             int pn = stoi(m[1], &sz);
             std::cout << "Yer Prime search says... " << isPrime(pn) << std::endl;
         }
 
         regex stp ("stop ([0-9]+)");
-        if (regex_search (input_line, m, stp))
+        if (regex_search (ttoken, m, stp))
         {
             int sn = stoi(m[1], &sz);
             mixer.signals.erase(mixer.signals.begin()+sn);
         }
-        if (input_line.compare("end") == 0) {
+        if (ttoken.compare("end") == 0) {
             mixer.signals.clear();
         }
-        if (input_line.compare("ps") == 0) {
+        if (ttoken.compare("ps") == 0) {
             for ( int i = 0; i < mixer.signals.size(); i++) 
             {
                 //cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
                 cout << "[" << i << "] " << mixer.signals[i]->info() << endl;
             }
         }
-    //}
+    }
 }
