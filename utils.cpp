@@ -17,7 +17,8 @@ using namespace std;
 
 void exxy()
 {
-    cout << "\n\033[38;5;47mBEat it, ya val jerk...\033[0m\n" << endl;
+    //cout << "\n\033[38;5;47mBEat it, ya val jerk...\033[0m\n" << endl;
+    cout << "\n" << COOL_COLOR_GREEN << "BEat it, ya val jerk...\n" << ANSI_COLOR_RESET << endl;
     exit(0);
 }
 
@@ -51,7 +52,7 @@ int setupAudio()
 {
     PaError err;
 
-    printf("PortAudio Sizzurp: output sine wave. SR = %d, BufSize = %d\n", SAMPLE_RATE, FRAMES_PER_BUFFER);
+    printf(ANSI_COLOR_MAGENTA "PortAudio Sizzurp: output sine wave. SR = %d, BufSize = %d\n" ANSI_COLOR_RESET, SAMPLE_RATE, FRAMES_PER_BUFFER);
     
     err = Pa_Initialize();
     if( err != paNoError ) goto error;

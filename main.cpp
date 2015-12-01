@@ -21,7 +21,7 @@ int main()
   string input_line;
   while (1)
   {
-    cout << "\n\033[38;5;47m#> \033[0m";
+    cout << "\n" << COOL_COLOR_GREEN << "#> " << ANSI_COLOR_RESET;
     getline(cin, input_line);
     if ( cin.eof() )
       exxy();
