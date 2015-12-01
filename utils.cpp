@@ -72,18 +72,22 @@ void siney(int freq)
   mixer.signals.push_back(new Oscillator(freq));
 }
 
-void squmpy(int freq)
+void fmy(int carfreq, int modfreq)
 {
   //Oscillator sine(freq);
   //Soundb0ard sbd(freq);
-  mixer.signals.push_back(new Sqump(freq));
+  mixer.signals.push_back(new Fm(carfreq, modfreq));
 }
 
-void squmpdate(int sqid, int freq)
+void fmupdate(int sqid, string osc, int freq)
 {
-    Sqump *sqmp =  (Sqump *) mixer.signals[sqid];
-    sqmp->mod.freq = freq;
-    std::cout << "Squmpdated! : sqmp.mod.freq: " << sqmp->mod.freq << std::endl;
+    Fm *fm =  (Fm *) mixer.signals[sqid];
+    fm->update(osc, freq);
+    //if (osc == "mod")
+    //    sqmp->mod.freq = freq;
+    //else if (osc == "car")
+    //    sqmp->car.freq = freq;
+    //std::cout << "Fmupdated! : sqmp.mod.freq: " << sqmp->mod.freq << std::endl;
 
 }
 
@@ -103,76 +107,89 @@ void triy(int freq)
 
 void interpret(string input_line)
 {
+
+    size_t pos = 0;
     string::size_type sz;
-    smatch m;
-    regex sn ("sine ([0-9]+)");
-    if (regex_search (input_line, m, sn))
-    {
-        int freq = stoi(m[1], &sz);
-        siney(freq);
-    }
 
-    regex sq ("sqump ([0-9]+)");
-    if (regex_search (input_line, m, sq))
-    {
-        int freq = stoi(m[1], &sz);
-        squmpy(freq);
-    }
+    std::string delim = ",";
+    std::string token;
 
-    regex sqch ("sq ([0-9]+) (mod|car) ([0-9]+)");
-    if (regex_search (input_line, m, sqch))
-    {
-        int sq = stoi(m[1], &sz);
-        int freq = stoi(m[3], &sz);
-        std::cout << "Oooh, changing a sqump! for " << m[2] << "Freq!: " << freq << std::endl;
-        squmpdate(sq, freq);
-    }
+    //while ((pos = input_line.find(delim)) != std::string::npos) {
 
-    regex sw ("saw ([0-9]+)");
-    if (regex_search (input_line, m, sw))
-    {
-        int freq = stoi(m[1], &sz);
-        sawy(freq);
-    }
+    //    token = input_line.substr(0, pos);
+    //    input_line.erase(0, pos + delim.length());
 
-    regex tr ("tri ([0-9]+)");
-    if (regex_search (input_line, m, tr))
-    {
-        int freq = stoi(m[1], &sz);
-        triy(freq);
-    }
-
-    if (input_line.compare("randy") == 0) {
-        std::cout << "YEr randyNUm is " << primeyGen() << std::endl;
-    }
-
-    if (input_line.compare("primey") == 0) {
-        Algae alg;
-        std::cout << "Starting Primey generat0r..." << std::endl;
-        std::thread {&Algae::Run, &alg}.detach();
-    }
-
-    regex pr ("prime ([0-9]+)");
-    if (regex_search (input_line, m, pr))
-    {
-        int pn = stoi(m[1], &sz);
-        std::cout << "Yer Prime search says... " << isPrime(pn) << std::endl;
-    }
-
-    regex stp ("stop ([0-9]+)");
-    if (regex_search (input_line, m, stp))
-    {
-        int sn = stoi(m[1], &sz);
-        mixer.signals.erase(mixer.signals.begin()+sn);
-    }
-    if (input_line.compare("end") == 0) {
-        mixer.signals.clear();
-    }
-    if (input_line.compare("ps") == 0) {
-        for ( int i = 0; i < mixer.signals.size(); i++) 
+        smatch m;
+        regex sn ("sine ([0-9]+)");
+        if (regex_search (input_line, m, sn))
         {
-            //cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
-            cout << "[" << i << "] " << mixer.signals[i]->info() << endl;
+            int freq = stoi(m[1], &sz);
+            siney(freq);
         }
-    }
+
+        regex sq ("fm ([0-9]+) ([0-9]+)");
+        if (regex_search (input_line, m, sq))
+        {
+            int cfreq = stoi(m[1], &sz);
+            int mfreq = stoi(m[2], &sz);
+            fmy(cfreq, mfreq);
+        }
+
+        regex sqch ("mfm ([0-9]+) (mod|car) ([0-9]+)");
+        if (regex_search (input_line, m, sqch))
+        {
+            int sq = stoi(m[1], &sz);
+            int freq = stoi(m[3], &sz);
+            std::cout << "Oooh, changing a fm! for " << m[2] << "Freq!: " << freq << std::endl;
+            fmupdate(sq, m[2], freq);
+        }
+
+        regex sw ("saw ([0-9]+)");
+        if (regex_search (input_line, m, sw))
+        {
+            int freq = stoi(m[1], &sz);
+            sawy(freq);
+        }
+
+        regex tr ("tri ([0-9]+)");
+        if (regex_search (input_line, m, tr))
+        {
+            int freq = stoi(m[1], &sz);
+            triy(freq);
+        }
+
+        if (input_line.compare("randy") == 0) {
+            std::cout << "YEr randyNUm is " << primeyGen() << std::endl;
+        }
+
+        if (input_line.compare("primey") == 0) {
+            Algae alg;
+            std::cout << "Starting Primey generat0r..." << std::endl;
+            std::thread {&Algae::Run, &alg}.detach();
+        }
+
+        regex pr ("prime ([0-9]+)");
+        if (regex_search (input_line, m, pr))
+        {
+            int pn = stoi(m[1], &sz);
+            std::cout << "Yer Prime search says... " << isPrime(pn) << std::endl;
+        }
+
+        regex stp ("stop ([0-9]+)");
+        if (regex_search (input_line, m, stp))
+        {
+            int sn = stoi(m[1], &sz);
+            mixer.signals.erase(mixer.signals.begin()+sn);
+        }
+        if (input_line.compare("end") == 0) {
+            mixer.signals.clear();
+        }
+        if (input_line.compare("ps") == 0) {
+            for ( int i = 0; i < mixer.signals.size(); i++) 
+            {
+                //cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
+                cout << "[" << i << "] " << mixer.signals[i]->info() << endl;
+            }
+        }
+    //}
 }

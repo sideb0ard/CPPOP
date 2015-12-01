@@ -1,14 +1,14 @@
-#ifndef SQUMP_H_
-#define SQUMP_H_
+#ifndef FM_H_
+#define FM_H_
 
 #include <string>
 #include "soundb0ard.h"
 #include "oscillator.h"
 
-class Sqump : public Soundb0ard
+class Fm : public Soundb0ard
 {
 public:
-  Sqump(float f);
+  Fm(float cf, float mf);
   //float freq;
   float vol;
   Oscillator car;
@@ -17,7 +17,8 @@ public:
   //float phaseIncr[4];
 
   float genNextSound();
+  void update(std::string osc, int freq);
   std::string info();
 };
 
-#endif // SQUMP_H_
+#endif // FM_H_

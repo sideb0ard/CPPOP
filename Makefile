@@ -2,7 +2,7 @@ CXX = clang++
 # CXXFLAGS = -std=c++11 -pthread
 CXXFLAGS = -std=c++11 -pthread
 LIBS = -lportaudio
-SRCS = main.cpp  mixer.cpp  oscillator.cpp  sawtooth.cpp  sqump.cpp  triangle.cpp  utils.cpp bpmrrr.cpp algae.cpp
+SRCS = main.cpp  mixer.cpp  oscillator.cpp  sawtooth.cpp  fm.cpp  triangle.cpp  utils.cpp bpmrrr.cpp algae.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 TARGET = CPPPOP

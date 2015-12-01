@@ -7,7 +7,7 @@
 #include "oscillator.h"
 #include "sawtooth.h"
 #include "soundb0ard.h"
-#include "sqump.h"
+#include "fm.h"
 #include "triangle.h"
 
 
