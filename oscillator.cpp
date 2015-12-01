@@ -34,7 +34,7 @@ float Oscillator::genNextSound()
 std::string Oscillator::info()
 {
     std::ostringstream ret_string;
-    ret_string << "Sine. Freq: " << freq << " // phase: " << phase << " // phaseIncr" << phaseIncr ;
+    ret_string << ANSI_COLOR_CYAN << "Sine. Freq: " << freq << " // phase: " << phase << " // phaseIncr" << phaseIncr << ANSI_COLOR_RESET ;
     return ret_string.str();
 
 }

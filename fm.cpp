@@ -46,7 +46,7 @@ float Fm::genNextSound()
 std::string Fm::info()
 {
     std::ostringstream ret_string;
-    ret_string << "Fm. Car.Freq: " << car.freq << " // Car.phase: " << car.phase << " // Mod.Freq: " << mod.freq << " // Mod.phase: " << mod.phase;
+    ret_string << ANSI_COLOR_YELLOW << "Fm. Car.Freq: " << car.freq << " // Car.phase: " << car.phase << " // Mod.Freq: " << mod.freq << " // Mod.phase: " << mod.phase << ANSI_COLOR_RESET;
     return ret_string.str();
 
 }
