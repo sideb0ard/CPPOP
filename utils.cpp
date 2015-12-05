@@ -69,41 +69,28 @@ error:
 
 void siney(int freq)
 {
-  //Oscillator sine(freq);
-  //Soundb0ard sbd(freq);
   mixer.signals.push_back(new Oscillator(freq));
 }
 
 void fmy(int carfreq, int modfreq)
 {
-  //Oscillator sine(freq);
-  //Soundb0ard sbd(freq);
   mixer.signals.push_back(new Fm(carfreq, modfreq));
 }
 
 void fmupdate(int sqid, string osc, int freq)
 {
+    // need some error checking here before casting
     Fm *fm =  (Fm *) mixer.signals[sqid];
     fm->update(osc, freq);
-    //if (osc == "mod")
-    //    sqmp->mod.freq = freq;
-    //else if (osc == "car")
-    //    sqmp->car.freq = freq;
-    //std::cout << "Fmupdated! : sqmp.mod.freq: " << sqmp->mod.freq << std::endl;
-
 }
 
 void sawy(int freq)
 {
-  //Oscillator sine(freq);
-  //Soundb0ard sbd(freq);
   mixer.signals.push_back(new Sawtooth(freq));
 }
 
 void triy(int freq)
 {
-  //Oscillator sine(freq);
-  //Soundb0ard sbd(freq);
   mixer.signals.push_back(new Triangle(freq));
 }
 
@@ -122,16 +109,17 @@ static inline std::string &rtrim(std::string &s) {
 void interpret(string input_line)
 {
 
-    //size_t pos = 0;
     string::size_type sz;
 
     std::string token;
     std::stringstream stream(input_line);
-    while(getline(stream, token, ',') ) {
-        std::string ttoken = ltrim(rtrim(token));
-        //cout << ltrim(rtrim(token)) << "YARLY" << endl;
 
+    // comma separated command input
+    while(getline(stream, token, ',') ) {
+
+        std::string ttoken = ltrim(rtrim(token));
         smatch m;
+
         regex sn ("sine ([0-9]+)");
         if (regex_search (ttoken, m, sn))
         {

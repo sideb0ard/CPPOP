@@ -11,6 +11,7 @@ using namespace std;
 
 Mixer mixer;
 BPMrrr bpm;
+vector<string> history;
 
 int main()
 {
@@ -21,11 +22,15 @@ int main()
   string input_line;
   while (1)
   {
-    cout << "\n" << COOL_COLOR_GREEN << "#> " << ANSI_COLOR_RESET;
-    getline(cin, input_line);
-    if ( cin.eof() )
-      exxy();
+    char *buf;
 
-    interpret(input_line);
+    while ((buf = readline("\n #> "))!= NULL) {
+    //cout << "\n" << COOL_COLOR_GREEN << "#> " << ANSI_COLOR_RESET;
+    //getline(cin, input_line);
+    //if ( cin.eof() )
+    //  exxy();
+        interpret(input_line);
+    }
+
   }
 }
