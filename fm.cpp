@@ -29,15 +29,17 @@ void Fm::update(std::string osc, int freq)
 float Fm::genNextSound()
 {
 
-    int modVal = mod.amp * sin(mod.phase);
+    //int modVal = mod.amp * sin(mod.phase);
+    //int modVal = 10 * sin(mod.phase);
+    int modVal = 1.5 * sin(mod.phase);
     car.phase += car.phIncr() + modVal;
-    //if (car.phase >= TWO_PI)
-    //    car.phase -= TWO_PI;
+    if (car.phase >= TWO_PI)
+        car.phase -= TWO_PI;
 
     mod.phase += mod.phIncr();
     ////std::cout << "car.phase: " << car.phase << "MOD.phaze!!: " << mod.phase << std::endl;
-    //if (mod.phase >= TWO_PI)
-    //    mod.phase -= TWO_PI;
+    if (mod.phase >= TWO_PI)
+        mod.phase -= TWO_PI;
 
     return vol * sin(car.phase);
     //return vol * 0.2;
