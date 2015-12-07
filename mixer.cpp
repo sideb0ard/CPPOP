@@ -137,6 +137,18 @@ int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
 
             *out++ = outval / signals.size();
             *out++ = outval / signals.size();
+            //if (outval > 1.0)
+            //    outval = 1.0;
+            //if (outval < -1.0)
+            //    outval = -1.0;
+            ////printf("OUTVAL: %f\n", outval);
+            ////if (outval > 1.0 || outval < -1.0) {
+            //    //*out++ = outval / signals.size();
+            //    //*out++ = outval / signals.size();
+            ////} else {
+            //*out++ = outval;
+            //*out++ = outval;
+            //}
         }
     }
 

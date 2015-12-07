@@ -18,6 +18,9 @@ using namespace std;
 void exxy()
 {
     //cout << "\n\033[38;5;47mBEat it, ya val jerk...\033[0m\n" << endl;
+    int err = Pa_Terminate();
+    if( err != paNoError )
+           printf(  "PortAudio error: %s\n", Pa_GetErrorText( err ) );
     cout << "\n" << COOL_COLOR_GREEN << "BEat it, ya val jerk...\n" << ANSI_COLOR_RESET << endl;
     exit(0);
 }
@@ -179,7 +182,10 @@ void interpret(string input_line)
         if (regex_search (ttoken, m, stp))
         {
             int sn = stoi(m[1], &sz);
-            mixer.signals.erase(mixer.signals.begin()+sn);
+            if (sn < mixer.sigSize())
+                mixer.signals.erase(mixer.signals.begin()+sn);
+            else
+                printf("Pull the other one, son!\n");
         }
         if (ttoken.compare("end") == 0) {
             mixer.signals.clear();
