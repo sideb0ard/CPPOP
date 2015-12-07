@@ -31,7 +31,7 @@ float Fm::genNextSound()
 
     //int modVal = mod.amp * sin(mod.phase);
     //int modVal = 10 * sin(mod.phase);
-    int modVal = 1.5 * sin(mod.phase);
+    auto modVal = mod.amp * sin(mod.phase);
     car.phase += car.phIncr() + modVal;
     if (car.phase >= TWO_PI)
         car.phase -= TWO_PI;
