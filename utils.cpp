@@ -17,17 +17,15 @@ using namespace std;
 
 void exxy()
 {
-    //cout << "\n\033[38;5;47mBEat it, ya val jerk...\033[0m\n" << endl;
     int err = Pa_Terminate();
     if( err != paNoError )
            printf(  "PortAudio error: %s\n", Pa_GetErrorText( err ) );
-    cout << "\n" << COOL_COLOR_GREEN << "BEat it, ya val jerk...\n" << ANSI_COLOR_RESET << endl;
+    cout << "\n" << COOL_COLOR_GREEN << "Beat it, ya val jerk...\n" << ANSI_COLOR_RESET << endl;
     exit(0);
 }
 
 int primeyGen()
 {
-    // init randy
     srand (time(NULL));
     int randy = rand() % 720 + 140; // between 140 - 860 - mostly audible range
     std::cout << "Randy Num : " << randy << " // Is it prime?" << isPrime(randy) << std::endl;
@@ -68,6 +66,18 @@ error:
     fprintf( stderr, "Error number: %d\n", err );
     fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
     return err;
+}
+
+void timedSigGenStart(const string signal, int freq)
+{
+    do {} while (mixer.microtick % 4 != 0);
+    std::cout << "Starting a " << signal << " at freq " << freq << std::endl;
+    if (signal.compare("sine") == 0) 
+        siney(freq);
+    if (signal.compare("saw") == 0) 
+        sawy(freq);
+    if (signal.compare("tri") == 0) 
+        triy(freq);
 }
 
 void siney(int freq)
@@ -123,11 +133,15 @@ void interpret(string input_line)
         std::string ttoken = ltrim(rtrim(token));
         smatch m;
 
-        regex sn ("sine ([0-9]+)");
-        if (regex_search (ttoken, m, sn))
+        regex sgn ("(sine|saw|tri) ([0-9]+)");
+        if (regex_search (ttoken, m, sgn))
         {
-            int freq = stoi(m[1], &sz);
-            siney(freq);
+
+            string signal = m[1];
+            int freq = stoi(m[2], &sz);
+            std::thread t(timedSigGenStart, signal, freq); //.detach();
+            t.detach();
+            //siney(freq);
         }
 
         regex sq ("fm ([0-9]+) ([0-9]+)");
@@ -147,19 +161,19 @@ void interpret(string input_line)
             fmupdate(sq, m[2], freq);
         }
 
-        regex sw ("saw ([0-9]+)");
-        if (regex_search (ttoken, m, sw))
-        {
-            int freq = stoi(m[1], &sz);
-            sawy(freq);
-        }
+        //regex sw ("saw ([0-9]+)");
+        //if (regex_search (ttoken, m, sw))
+        //{
+        //    int freq = stoi(m[1], &sz);
+        //    sawy(freq);
+        //}
 
-        regex tr ("tri ([0-9]+)");
-        if (regex_search (ttoken, m, tr))
-        {
-            int freq = stoi(m[1], &sz);
-            triy(freq);
-        }
+        //regex tr ("tri ([0-9]+)");
+        //if (regex_search (ttoken, m, tr))
+        //{
+        //    int freq = stoi(m[1], &sz);
+        //    triy(freq);
+        //}
 
         if (ttoken.compare("randy") == 0) {
             std::cout << "YEr randyNUm is " << primeyGen() << std::endl;
