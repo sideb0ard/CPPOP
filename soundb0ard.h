@@ -10,7 +10,7 @@ public:
     //Oscillator car; // carrier
     //Oscillator mod; // modulator
 
-    virtual float genNextSound() = 0;
+    virtual float genNextSound() = 0;  // rename to genNextVal?
     virtual std::string info() = 0;
 
     float freq;

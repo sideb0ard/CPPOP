@@ -4,10 +4,11 @@
 #include <vector>
 #include <portaudio.h>
 
+#include "envelope.h"
+#include "fm.h"
 #include "oscillator.h"
 #include "sawtooth.h"
 #include "soundb0ard.h"
-#include "fm.h"
 #include "triangle.h"
 
 
@@ -23,10 +24,12 @@ public:
     int sigSize();
 
     int bpm;
-    int microtick; // 16 x bpm
+    int microtick; // 16 per bpm
+    int sleeptime; // time between microticks - (6000ms / bpm) / 16 microticks
 
     //std::vector<Oscillator> signals;
     std::vector<Soundb0ard*> signals;
+    std::vector<Envelope*> envelopes;
 
 private:
     /* The instance callback, where we have access to every method/variable in object of class Mixer */

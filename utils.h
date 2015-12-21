@@ -18,6 +18,7 @@ int primeyGen();
 void siney(int freq);
 void sawy(int freq);
 void triy(int freq);
+void env();
 void interpret(std::string input_line);
 
 #endif

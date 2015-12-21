@@ -12,14 +12,14 @@
 using namespace std;
 
 Mixer mixer;
-BPMrrr bpm;
+BPMrrr bpmrrr;
 vector<string> history;
 
 int main()
 {
   setupAudio();
   thread {&Mixer::goMix, &mixer}.detach();
-  thread {&BPMrrr::Run, &bpm}.detach();
+  thread {&BPMrrr::Run, &bpmrrr}.detach();
 
   char *buf;
   std::string prompt = std::string("\n") + COOL_COLOR_GREEN + "#> " + ANSI_COLOR_RESET;

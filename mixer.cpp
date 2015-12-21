@@ -7,8 +7,9 @@
 #include "mixer.h"
 
 
-Mixer::Mixer() : stream(0), bpm(100)
+Mixer::Mixer() : bpm(100), microtick(0), stream(0)
 {
+    sleeptime = (60000 / bpm) / 16;
 }
 
 bool Mixer::open(PaDeviceIndex index)
@@ -129,25 +130,32 @@ int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
         {
             float outval = 0;
             float ns = 0;
+            float mod = 0;
             for ( j=0; j<signals.size(); j++ )
             {
                 ns = signals[j]->genNextSound();
+                if (j < envelopes.size()) {
+                    //std::cout << "Appplying envelope\n";
+                    mod = envelopes[j]->genNextVal();
+                    ns *= mod;
+                }
+
                 outval += ns;
             }
 
-            *out++ = outval / signals.size();
-            *out++ = outval / signals.size();
-            //if (outval > 1.0)
-            //    outval = 1.0;
-            //if (outval < -1.0)
-            //    outval = -1.0;
-            ////printf("OUTVAL: %f\n", outval);
-            ////if (outval > 1.0 || outval < -1.0) {
-            //    //*out++ = outval / signals.size();
-            //    //*out++ = outval / signals.size();
-            ////} else {
-            //*out++ = outval;
-            //*out++ = outval;
+            //*out++ = outval / signals.size();
+            //*out++ = outval / signals.size();
+            if (outval > 1.0)
+                outval = 1.0;
+            if (outval < -1.0)
+                outval = -1.0;
+            //printf("OUTVAL: %f\n", outval);
+            //if (outval > 1.0 || outval < -1.0) {
+                //*out++ = outval / signals.size();
+                //*out++ = outval / signals.size();
+            //} else {
+            *out++ = outval;
+            *out++ = outval;
             //}
         }
     }

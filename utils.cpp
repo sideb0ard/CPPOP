@@ -37,7 +37,7 @@ int primeyGen()
 
 int isPrime(int n)
 {
-    int i, sq, count = 0;
+    int i, sq;
     if ( n == 1 || n == 2 )
         return true;
     sq = sqrt(n);
@@ -70,7 +70,7 @@ error:
 
 void timedSigGenStart(const string signal, int freq)
 {
-    do {} while (mixer.microtick % 4 != 0);
+    do {} while (mixer.microtick % 16 != 0);
     std::cout << "Starting a " << signal << " at freq " << freq << std::endl;
     if (signal.compare("sine") == 0) 
         siney(freq);
@@ -78,6 +78,8 @@ void timedSigGenStart(const string signal, int freq)
         sawy(freq);
     if (signal.compare("tri") == 0) 
         triy(freq);
+    if (signal.compare("env") == 0) 
+        env();
 }
 
 void siney(int freq)
@@ -105,6 +107,11 @@ void sawy(int freq)
 void triy(int freq)
 {
   mixer.signals.push_back(new Triangle(freq));
+}
+
+void env()
+{
+  mixer.envelopes.push_back(new Envelope());
 }
 
 // trim from start
@@ -175,6 +182,12 @@ void interpret(string input_line)
         //    triy(freq);
         //}
 
+        if (ttoken.compare("env") == 0) {
+            std::thread t(timedSigGenStart, ttoken, 0.0);
+            t.detach();
+            //std::cout << "YEr randyNUm is " << primeyGen() << std::endl;
+        }
+
         if (ttoken.compare("randy") == 0) {
             std::cout << "YEr randyNUm is " << primeyGen() << std::endl;
         }
@@ -205,6 +218,8 @@ void interpret(string input_line)
             mixer.signals.clear();
         }
         if (ttoken.compare("ps") == 0) {
+            cout << ANSI_COLOR_CYAN << "\n[*************** SINE WAVVEY ******************]\n" << ANSI_COLOR_RESET;
+            cout << "    BPM: " << mixer.bpm << " Sleeptime: " << mixer.sleeptime << " MicroTick: " << mixer.microtick << "\n\n";
             for ( int i = 0; i < mixer.signals.size(); i++) 
             {
                 //cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
