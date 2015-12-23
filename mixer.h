@@ -25,7 +25,7 @@ public:
 
     int bpm;
     int microtick; // 16 per bpm
-    int sleeptime; // time between microticks - (6000ms / bpm) / 16 microticks
+//    int sleeptime; // time between microticks - (6000ms / bpm) / 16 microticks
 
     //std::vector<Oscillator> signals;
     std::vector<Soundb0ard*> signals;

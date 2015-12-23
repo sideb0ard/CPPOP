@@ -68,7 +68,7 @@ error:
     return err;
 }
 
-void timedSigGenStart(const string signal, int freq)
+void timedSigGenStart(const string signal, int freq, int freq2)
 {
     do {} while (mixer.microtick % 16 != 0);
     std::cout << "Starting a " << signal << " at freq " << freq << std::endl;
@@ -80,6 +80,8 @@ void timedSigGenStart(const string signal, int freq)
         triy(freq);
     if (signal.compare("env") == 0) 
         env();
+    if (signal.compare("fm") == 0) 
+        fmy(freq, freq2);
 }
 
 void siney(int freq)
@@ -146,7 +148,7 @@ void interpret(string input_line)
 
             string signal = m[1];
             int freq = stoi(m[2], &sz);
-            std::thread t(timedSigGenStart, signal, freq); //.detach();
+            std::thread t(timedSigGenStart, signal, freq, 0); //.detach();
             t.detach();
             //siney(freq);
         }
@@ -156,7 +158,10 @@ void interpret(string input_line)
         {
             int cfreq = stoi(m[1], &sz);
             int mfreq = stoi(m[2], &sz);
-            fmy(cfreq, mfreq);
+            //fmy(cfreq, mfreq);
+            std::thread t(timedSigGenStart, "fm", cfreq, mfreq); //.detach();
+            t.detach();
+
         }
 
         regex sqch ("mfm ([0-9]+) (mod|car) ([0-9]+)");
@@ -183,7 +188,7 @@ void interpret(string input_line)
         //}
 
         if (ttoken.compare("env") == 0) {
-            std::thread t(timedSigGenStart, ttoken, 0.0);
+            std::thread t(timedSigGenStart, ttoken, 0.0, 0);
             t.detach();
             //std::cout << "YEr randyNUm is " << primeyGen() << std::endl;
         }
@@ -205,6 +210,14 @@ void interpret(string input_line)
             std::cout << "Yer Prime search says... " << isPrime(pn) << std::endl;
         }
 
+        regex bpmrrr ("bpm ([0-9]+)");
+        if (regex_search (ttoken, m, bpmrrr))
+        {
+            int bpm = stoi(m[1], &sz);
+            mixer.bpm = bpm;
+            std::cout << "Changing BPM to " << bpm << std::endl;
+        }
+
         regex stp ("stop ([0-9]+)");
         if (regex_search (ttoken, m, stp))
         {
@@ -219,11 +232,16 @@ void interpret(string input_line)
         }
         if (ttoken.compare("ps") == 0) {
             cout << ANSI_COLOR_CYAN << "\n[*************** SINE WAVVEY ******************]\n" << ANSI_COLOR_RESET;
-            cout << "    BPM: " << mixer.bpm << " Sleeptime: " << mixer.sleeptime << " MicroTick: " << mixer.microtick << "\n\n";
+            cout << "    BPM: " << mixer.bpm << " MicroTick: " << mixer.microtick << "\n\n";
             for ( int i = 0; i < mixer.signals.size(); i++) 
             {
                 //cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
                 cout << "[" << i << "] " << mixer.signals[i]->info() << endl;
+            }
+            for ( int i = 0; i < mixer.envelopes.size(); i++) 
+            {
+                //cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
+                cout << "[" << i << "] " << mixer.envelopes[i]->info() << endl;
             }
         }
     }

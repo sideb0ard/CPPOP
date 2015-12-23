@@ -9,7 +9,7 @@
 
 Mixer::Mixer() : bpm(100), microtick(0), stream(0)
 {
-    sleeptime = (60000 / bpm) / 16;
+    //sleeptime = (60000 / bpm) / 16;
 }
 
 bool Mixer::open(PaDeviceIndex index)

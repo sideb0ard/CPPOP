@@ -16,6 +16,7 @@ public:
 private:
     float phase;
     float phaseIncr;
+    int looptime; // in beats
 };
 
 #endif // ENVELOPE_H_

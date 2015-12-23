@@ -9,6 +9,8 @@ public:
     //BPMrrr();
     BPMrrr();
     void Run();
+private:
+    int sleeptime;
 };
 
 #endif // BPMrrr_H
