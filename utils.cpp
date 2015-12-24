@@ -84,6 +84,22 @@ void timedSigGenStart(const string signal, int freq, int freq2)
         fmy(freq, freq2);
 }
 
+void stoprrr(int signalNum)
+{
+    int sleeptime = 50;
+    float volly = mixer.signals[signalNum]->getVol();
+    //std::cout << "ENTERED Vol now For " << signalNum << " // Volume : " << mixer.signals[signalNum]->vol << std::endl;
+    while ( mixer.signals[signalNum]->getVol() > 0.0) {
+        volly -= 0.01;
+        mixer.signals[signalNum]->setVol(volly);
+        //std::cout << "Mictic:::: " << mixer.microtick << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(sleeptime));
+    }
+    mixer.signals.erase(mixer.signals.begin()+signalNum);
+    std::cout << "Shut down a pesky signal\n";
+}
+
+
 void siney(int freq)
 {
   mixer.signals.push_back(new Oscillator(freq));
@@ -222,8 +238,11 @@ void interpret(string input_line)
         if (regex_search (ttoken, m, stp))
         {
             int sn = stoi(m[1], &sz);
-            if (sn < mixer.sigSize())
-                mixer.signals.erase(mixer.signals.begin()+sn);
+            if (sn < mixer.sigSize()) {
+                std::thread t(stoprrr, sn); //.detach();
+                t.detach();
+                //mixer.signals.erase(mixer.signals.begin()+sn);
+            }
             else
                 printf("Pull the other one, son!\n");
         }

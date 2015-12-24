@@ -12,8 +12,11 @@ public:
 
     virtual float genNextSound() = 0;  // rename to genNextVal?
     virtual std::string info() = 0;
+    virtual float getVol() = 0;
+    virtual void setVol(float vol) = 0;
 
-    float freq;
+    //float vol;
+    //float freq;
 };
 
 #endif // SOUNDB0ARD_

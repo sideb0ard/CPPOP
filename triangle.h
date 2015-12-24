@@ -15,6 +15,8 @@ public:
 
   float genNextSound();
   std::string info();
+  float getVol();
+  void setVol(float volume);
 };
 
 #endif // TRIANGLE_H_

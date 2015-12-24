@@ -17,6 +17,8 @@ public:
 
   float genNextSound();
   float phIncr();
+  float getVol();
+  void setVol(float vol);
   std::string info();
 };
 

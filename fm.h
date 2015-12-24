@@ -18,6 +18,8 @@ public:
 
   float genNextSound();
   void update(std::string osc, int freq);
+  void setVol(float volume);
+  float getVol();
   std::string info();
 };
 

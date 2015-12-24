@@ -36,3 +36,19 @@ std::string Triangle::info()
 
 }
     
+
+float Triangle::getVol()
+{
+    return vol;
+}
+
+void Triangle::setVol(float volume)
+{
+    if (volume <= 1.0) {
+        if (volume <= 0.0)
+            vol = volume;
+        else 
+            vol = volume;
+    }
+}
+

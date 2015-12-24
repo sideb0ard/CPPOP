@@ -1,6 +1,6 @@
 CXX = clang++
 # CXXFLAGS = -std=c++11 -pthread
-CXXFLAGS = -std=c++11 -pthread -Wall -Werror
+CXXFLAGS = -std=c++11 -pthread -Wall
 LIBS = -lportaudio -lreadline
 INC = -I/usr/local/include
 SRCS = main.cpp  mixer.cpp  oscillator.cpp  sawtooth.cpp  fm.cpp  triangle.cpp  utils.cpp bpmrrr.cpp algae.cpp envelope.cpp

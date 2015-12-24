@@ -15,6 +15,22 @@ Fm::Fm(float cf, float mf) : car{cf}, mod{mf}
 
 }
 
+float Fm::getVol()
+{
+    return vol;
+}
+
+void Fm::setVol(float volume)
+{
+    if (volume <= 1.0) {
+        if ( volume <= 0.0 ) {
+            vol = 0.0;
+        } else {
+            vol = volume;
+        }
+    }
+}
+
 void Fm::update(std::string osc, int freq)
 {
     //Fm *sqmp =  (Fm *) mixer.signals[sqid];

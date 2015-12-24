@@ -17,6 +17,21 @@ Oscillator::Oscillator(float f) : freq{f}
 
 }
     
+float Oscillator::getVol()
+{
+    return vol;
+}
+
+void Oscillator::setVol(float volume)
+{
+    if (volume <= 1.0) {
+        if ( volume <= 0.0 ) {
+            vol = 0.0;
+        } else {
+            vol = volume;
+        }
+    }
+}
 
 float Oscillator::phIncr()
 {
@@ -34,7 +49,7 @@ float Oscillator::genNextSound()
 std::string Oscillator::info()
 {
     std::ostringstream ret_string;
-    ret_string << ANSI_COLOR_CYAN << "Sine. Freq: " << freq << " // phase: " << phase << " // phaseIncr" << phaseIncr << ANSI_COLOR_RESET ;
+    ret_string << ANSI_COLOR_CYAN << "Sine. Freq: " << freq << " // phase: " << phase << " // phaseIncr" << phaseIncr << " Vol: " << vol << ANSI_COLOR_RESET ;
     return ret_string.str();
 
 }

@@ -30,3 +30,18 @@ std::string Sawtooth::info()
 
 }
     
+float Sawtooth::getVol()
+{
+        return vol;
+}
+
+void Sawtooth::setVol(float volume)
+{
+    if (volume <= 1.0) {
+        if (volume <= 0.0)
+            vol = volume;
+        else 
+            vol = volume;
+    }
+}
+
