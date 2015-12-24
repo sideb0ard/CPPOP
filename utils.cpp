@@ -86,11 +86,11 @@ void timedSigGenStart(const string signal, int freq, int freq2)
 
 void stoprrr(int signalNum)
 {
-    int sleeptime = 50;
+    int sleeptime = 5;
     float volly = mixer.signals[signalNum]->getVol();
     //std::cout << "ENTERED Vol now For " << signalNum << " // Volume : " << mixer.signals[signalNum]->vol << std::endl;
     while ( mixer.signals[signalNum]->getVol() > 0.0) {
-        volly -= 0.01;
+        volly -= 0.001;
         mixer.signals[signalNum]->setVol(volly);
         //std::cout << "Mictic:::: " << mixer.microtick << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(sleeptime));
