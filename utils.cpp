@@ -99,15 +99,35 @@ void stoprrr(int signalNum)
     std::cout << "Shut down a pesky signal\n";
 }
 
+void startrrr(int signalNum)
+{
+    std::cout << "Starting a... starting a signal\n";
+    int sleeptime = 5;
+    float volly = mixer.signals[signalNum]->getVol();
+    //std::cout << "ENTERED Vol now For " << signalNum << " // Volume : " << mixer.signals[signalNum]->vol << std::endl;
+    while ( mixer.signals[signalNum]->getVol() < 0.8) {
+        volly += 0.001;
+        mixer.signals[signalNum]->setVol(volly);
+        //std::cout << "Mictic:::: " << mixer.microtick << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(sleeptime));
+    }
+    //mixer.signals.erase(mixer.signals.begin()+signalNum);
+    std::cout << "Finished starting a signal\n";
+}
 
 void siney(int freq)
 {
   mixer.signals.push_back(new Oscillator(freq));
+  //std::cout << "Mixer size is " << mixer.signals.size() << " Last one is "
+  std::thread t(startrrr, mixer.signals.size() - 1); //.detach();
+  t.detach();
 }
 
 void fmy(int carfreq, int modfreq)
 {
   mixer.signals.push_back(new Fm(carfreq, modfreq));
+  std::thread t(startrrr, mixer.signals.size() - 1); //.detach();
+  t.detach();
 }
 
 void fmupdate(int sqid, string osc, int freq)

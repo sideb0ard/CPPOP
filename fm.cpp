@@ -9,7 +9,7 @@
 //Fm::Fm(float f) : freq{f}, car{f}, mod{730}
 Fm::Fm(float cf, float mf) : car{cf}, mod{mf}
 {
-    vol = 0.7;
+    vol = 0.0;
     mod.amp = FREQRAD * 100;
     std::cout << "SQUMP CREATTTTTED... with " << cf << " :: " << mf << std::endl;
 
