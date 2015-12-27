@@ -7,15 +7,16 @@ class Envelope
 {
 public:
     Envelope();
-    float peakstart;
-    float peakstop;
-    
     float genNextVal();
     std::string info();
 
 private:
     float phase;
     float phaseIncr;
+    float peakstart;
+    float peakstop;
+    
+    int bpm; // taken from Mixer settings
     int looptime; // in beats
 };
 

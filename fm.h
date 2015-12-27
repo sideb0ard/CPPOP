@@ -12,8 +12,8 @@ public:
   Oscillator car;
   Oscillator mod;
 
-  float genNextSound();
   void update(std::string osc, int freq);
+  float genNextSound();
   std::string info();
 };
 

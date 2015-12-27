@@ -11,15 +11,15 @@
 
 extern Mixer mixer;
 
-void exxy();
 int isPrime(int n);
-int setupAudio();
 int primeyGen();
-void siney(int freq);
-void sawy(int freq);
-void triy(int freq);
-void fmy(int mfreq, int cfreq);
+int setupAudio();
 void env();
+void exxy();
+void fmy(int mfreq, int cfreq);
 void interpret(std::string input_line);
+void siney(int freq);
+void stoprrr(int signalNum);
+void timedSigGenStart(const std::string signal, int freq, int freq2);
 
 #endif
