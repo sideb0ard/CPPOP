@@ -31,10 +31,14 @@ float Fm::genNextSound()
     car.phase += car.phIncr() + modVal;
     if (car.phase >= TWO_PI)
         car.phase -= TWO_PI;
+    if (car.phase < 0.0)
+        car.phase += TWO_PI;
 
     mod.phase += mod.phIncr();
     if (mod.phase >= TWO_PI)
         mod.phase -= TWO_PI;
+    if (mod.phase < 0.0)
+        mod.phase += TWO_PI;
 
     return vol * sin(car.phase);
 }

@@ -7,8 +7,10 @@
 #include "mixer.h"
 
 
-Mixer::Mixer() : bpm(100), microtick(0), stream(0)
+Mixer::Mixer() : bpm(80), microtick(0), stream(0)
 {
+    for ( int i = 0; i < 5; i++)
+        envelopes.push_back(new Envelope());
     //sleeptime = (60000 / bpm) / 16;
 }
 
