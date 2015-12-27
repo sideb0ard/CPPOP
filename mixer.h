@@ -7,9 +7,7 @@
 #include "envelope.h"
 #include "fm.h"
 #include "oscillator.h"
-#include "sawtooth.h"
 #include "soundb0ard.h"
-#include "triangle.h"
 
 
 class Mixer

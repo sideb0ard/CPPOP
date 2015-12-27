@@ -10,15 +10,11 @@ public:
   Oscillator(float f);
   float freq;
   float amp;
-  float vol;
   float phase;
   float phaseIncr;
-  float clock;
 
   float genNextSound();
   float phIncr();
-  float getVol();
-  void setVol(float vol);
   std::string info();
 };
 

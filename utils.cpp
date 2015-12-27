@@ -74,10 +74,6 @@ void timedSigGenStart(const string signal, int freq, int freq2)
     std::cout << "Starting a " << signal << " at freq " << freq << std::endl;
     if (signal.compare("sine") == 0) 
         siney(freq);
-    if (signal.compare("saw") == 0) 
-        sawy(freq);
-    if (signal.compare("tri") == 0) 
-        triy(freq);
     if (signal.compare("env") == 0) 
         env();
     if (signal.compare("fm") == 0) 
@@ -104,8 +100,9 @@ void startrrr(int signalNum)
     std::cout << "Starting a... starting a signal\n";
     int sleeptime = 5;
     float volly = mixer.signals[signalNum]->getVol();
-    //std::cout << "ENTERED Vol now For " << signalNum << " // Volume : " << mixer.signals[signalNum]->vol << std::endl;
+    std::cout << "ENTERED Vol now For " << signalNum << " // Volume : " << mixer.signals[signalNum]->getVol() << std::endl;
     while ( mixer.signals[signalNum]->getVol() < 0.8) {
+        std::cout << "Still adding 0.001. Volume is " << mixer.signals[signalNum]->getVol() << std::endl;
         volly += 0.001;
         mixer.signals[signalNum]->setVol(volly);
         //std::cout << "Mictic:::: " << mixer.microtick << std::endl;
@@ -118,7 +115,6 @@ void startrrr(int signalNum)
 void siney(int freq)
 {
   mixer.signals.push_back(new Oscillator(freq));
-  //std::cout << "Mixer size is " << mixer.signals.size() << " Last one is "
   std::thread t(startrrr, mixer.signals.size() - 1); //.detach();
   t.detach();
 }
@@ -135,16 +131,6 @@ void fmupdate(int sqid, string osc, int freq)
     // need some error checking here before casting
     Fm *fm =  (Fm *) mixer.signals[sqid];
     fm->update(osc, freq);
-}
-
-void sawy(int freq)
-{
-  mixer.signals.push_back(new Sawtooth(freq));
-}
-
-void triy(int freq)
-{
-  mixer.signals.push_back(new Triangle(freq));
 }
 
 void env()
@@ -186,7 +172,6 @@ void interpret(string input_line)
             int freq = stoi(m[2], &sz);
             std::thread t(timedSigGenStart, signal, freq, 0); //.detach();
             t.detach();
-            //siney(freq);
         }
 
         regex sq ("fm ([0-9]+) ([0-9]+)");
@@ -194,7 +179,6 @@ void interpret(string input_line)
         {
             int cfreq = stoi(m[1], &sz);
             int mfreq = stoi(m[2], &sz);
-            //fmy(cfreq, mfreq);
             std::thread t(timedSigGenStart, "fm", cfreq, mfreq); //.detach();
             t.detach();
 
@@ -209,24 +193,9 @@ void interpret(string input_line)
             fmupdate(sq, m[2], freq);
         }
 
-        //regex sw ("saw ([0-9]+)");
-        //if (regex_search (ttoken, m, sw))
-        //{
-        //    int freq = stoi(m[1], &sz);
-        //    sawy(freq);
-        //}
-
-        //regex tr ("tri ([0-9]+)");
-        //if (regex_search (ttoken, m, tr))
-        //{
-        //    int freq = stoi(m[1], &sz);
-        //    triy(freq);
-        //}
-
         if (ttoken.compare("env") == 0) {
             std::thread t(timedSigGenStart, ttoken, 0.0, 0);
             t.detach();
-            //std::cout << "YEr randyNUm is " << primeyGen() << std::endl;
         }
 
         if (ttoken.compare("randy") == 0) {
@@ -261,7 +230,6 @@ void interpret(string input_line)
             if (sn < mixer.sigSize()) {
                 std::thread t(stoprrr, sn); //.detach();
                 t.detach();
-                //mixer.signals.erase(mixer.signals.begin()+sn);
             }
             else
                 printf("Pull the other one, son!\n");
@@ -274,12 +242,10 @@ void interpret(string input_line)
             cout << "    BPM: " << mixer.bpm << " MicroTick: " << mixer.microtick << "\n\n";
             for ( int i = 0; i < mixer.signals.size(); i++) 
             {
-                //cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
                 cout << "[" << i << "] " << mixer.signals[i]->info() << endl;
             }
             for ( int i = 0; i < mixer.envelopes.size(); i++) 
             {
-                //cout << "Sine:" << i << " // Freq: " << mixer.signals[i].car.freq << endl;
                 cout << "[" << i << "] " << mixer.envelopes[i]->info() << endl;
             }
         }
