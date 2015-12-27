@@ -84,11 +84,9 @@ void stoprrr(int signalNum)
 {
     int sleeptime = 5;
     float volly = mixer.signals[signalNum]->getVol();
-    //std::cout << "ENTERED Vol now For " << signalNum << " // Volume : " << mixer.signals[signalNum]->vol << std::endl;
     while ( mixer.signals[signalNum]->getVol() > 0.0) {
         volly -= 0.001;
         mixer.signals[signalNum]->setVol(volly);
-        //std::cout << "Mictic:::: " << mixer.microtick << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(sleeptime));
     }
     mixer.signals.erase(mixer.signals.begin()+signalNum);
@@ -100,15 +98,11 @@ void startrrr(int signalNum)
     std::cout << "Starting a... starting a signal\n";
     int sleeptime = 5;
     float volly = mixer.signals[signalNum]->getVol();
-    std::cout << "ENTERED Vol now For " << signalNum << " // Volume : " << mixer.signals[signalNum]->getVol() << std::endl;
     while ( mixer.signals[signalNum]->getVol() < 0.8) {
-        std::cout << "Still adding 0.001. Volume is " << mixer.signals[signalNum]->getVol() << std::endl;
         volly += 0.001;
         mixer.signals[signalNum]->setVol(volly);
-        //std::cout << "Mictic:::: " << mixer.microtick << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(sleeptime));
     }
-    //mixer.signals.erase(mixer.signals.begin()+signalNum);
     std::cout << "Finished starting a signal\n";
 }
 
