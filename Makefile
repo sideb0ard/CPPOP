@@ -3,7 +3,7 @@ CXX = clang++
 CXXFLAGS = -std=c++11 -pthread -Wall
 LIBS = -lportaudio -lreadline
 INC = -I/usr/local/include
-SRCS = main.cpp mixer.cpp oscillator.cpp fm.cpp utils.cpp bpmrrr.cpp algae.cpp envelope.cpp
+SRCS = main.cpp mixer.cpp oscillator.cpp fm.cpp utils.cpp bpmrrr.cpp algae.cpp envelope.cpp songone.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 TARGET = CPPPOP

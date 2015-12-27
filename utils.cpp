@@ -7,6 +7,7 @@
 #include <portaudio.h>
 
 #include "algae.h"
+#include "songone.h"
 #include "defjams.h"
 #include "mixer.h"
 #include "utils.h"
@@ -198,8 +199,13 @@ void interpret(string input_line)
 
         if (ttoken.compare("primey") == 0) {
             Algae alg;
-            std::cout << "Starting Primey generat0r..." << std::endl;
+            std::cout << "starting primey generat0r..." << std::endl;
             std::thread {&Algae::Run, &alg}.detach();
+        }
+        if (ttoken.compare("songone") == 0) {
+            Songone sng1;
+            std::cout << "starting Song ONE ..." << std::endl;
+            std::thread {&Songone::Run, &sng1}.detach();
         }
 
         regex pr ("prime ([0-9]+)");

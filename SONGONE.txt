@@ -1,0 +1,24 @@
+start:
+    fm 80 256
+    time (rand(20))
+    fm 80 (253 || 247) x time (rand(20))
+    fm 80 (257 || 243) x time (rand(20))
+
+time x rand(37sec)
+    stop 0
+time x rand(7sec)
+    stop 0
+time x rand(7sec)
+    stop 0, fm 23 300
+time x rand(7sec)
+    fm 23 200
+time x rand(7sec)
+    fm 23 100
+stop rand (2)
+time x rand(7sec)
+    stop 0
+time x rand(7sec)
+    stop 0
+
+
+
