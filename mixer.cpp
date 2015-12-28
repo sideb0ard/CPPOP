@@ -135,14 +135,16 @@ int Mixer::paCallbackMethod(const void *inputBuffer, void *outputBuffer,
             float mod = 0;
             for ( j=0; j<signals.size(); j++ )
             {
-                ns = signals[j]->genNextSound();
-                if (j < envelopes.size()) {
-                    //std::cout << "Appplying envelope\n";
-                    mod = envelopes[j]->genNextVal();
-                    ns *= mod;
-                }
+                if (signals[j]->getVol() > 0.0) {
+                  ns = signals[j]->genNextSound();
+                  if (j < envelopes.size()) {
+                      //std::cout << "Appplying envelope\n";
+                      mod = envelopes[j]->genNextVal();
+                      ns *= mod;
+                  }
 
-                outval += ns;
+                  outval += ns;
+                }
             }
 
             //*out++ = outval / signals.size();
