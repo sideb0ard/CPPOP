@@ -91,8 +91,8 @@ void stoprrr(int signalNum)
         std::this_thread::sleep_for(std::chrono::milliseconds(sleeptime));
     }
     mixer.signals[signalNum]->setVol(0.0);
-    //std::this_thread::sleep_for(std::chrono::milliseconds(sleeptime * 10));
-    //mixer.signals.erase(mixer.signals.begin()+signalNum);
+    std::this_thread::sleep_for(std::chrono::milliseconds(sleeptime * 100));
+    mixer.signals.erase(mixer.signals.begin()+signalNum);
     std::cout << "Shut down a pesky signal\n";
 }
 
