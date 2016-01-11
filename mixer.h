@@ -6,6 +6,7 @@
 
 #include "envelope.h"
 #include "fm.h"
+#include "sqfm.h"
 #include "oscillator.h"
 #include "soundb0ard.h"
 

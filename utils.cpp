@@ -79,6 +79,8 @@ void timedSigGenStart(const string signal, int freq, int freq2)
         env();
     if (signal.compare("fm") == 0) 
         fmy(freq, freq2);
+    if (signal.compare("sqfm") == 0) 
+        sqfmy(freq, freq2);
 }
 
 void stoprrr(int signalNum)
@@ -119,6 +121,13 @@ void siney(int freq)
 void fmy(int carfreq, int modfreq)
 {
   mixer.signals.push_back(new Fm(carfreq, modfreq));
+  std::thread t(startrrr, mixer.signals.size() - 1); //.detach();
+  t.detach();
+}
+
+void sqfmy(int carfreq, int modfreq)
+{
+  mixer.signals.push_back(new Sqfm(carfreq, modfreq));
   std::thread t(startrrr, mixer.signals.size() - 1); //.detach();
   t.detach();
 }
@@ -171,12 +180,13 @@ void interpret(string input_line)
             t.detach();
         }
 
-        regex sq ("fm ([0-9]+) ([0-9]+)");
+        regex sq ("(sqfm|fm) ([0-9]+) ([0-9]+)");
         if (regex_search (ttoken, m, sq))
         {
-            int cfreq = stoi(m[1], &sz);
-            int mfreq = stoi(m[2], &sz);
-            std::thread t(timedSigGenStart, "fm", cfreq, mfreq); //.detach();
+            string signal = m[1];
+            int cfreq = stoi(m[2], &sz);
+            int mfreq = stoi(m[3], &sz);
+            std::thread t(timedSigGenStart, signal, cfreq, mfreq); //.detach();
             t.detach();
 
         }

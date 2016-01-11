@@ -17,6 +17,7 @@ int setupAudio();
 void env();
 void exxy();
 void fmy(int mfreq, int cfreq);
+void sqfmy(int mfreq, int cfreq);
 void interpret(std::string input_line);
 void siney(int freq);
 void stoprrr(int signalNum);
